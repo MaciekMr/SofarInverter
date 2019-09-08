@@ -3,8 +3,10 @@
 
 #include <thread>
 #include <functional>
+#include <map>
 
 using std::thread;
+using std::map;
 
 class Thread{
 
@@ -20,11 +22,18 @@ public:
 
 };
 
+typedef map<int, Thread *> thread_map;
 
 class ThreadSet
 {
+private:
+    thread_map threads;
 public:
     ThreadSet();
+    ~ThreadSet();
+
+    void addthread();
+
 };
 
 #endif // THREADSET_H
