@@ -2,10 +2,15 @@
 
 using std::thread;
 
-template <class T>
-Thread::Thread(std::function<T>  *ptr){
+/*
+ * template <class T>
+  Thread::Thread(std::function<void (Params && ... p)> task, Params && p )
+  */
 
-    thread_ptr = new thread (ptr);
+template< class Function, class... Args >
+Thread( Function&& f, Args&&... args ){
+
+    thread_ptr = new thread (task);
 }
 
 Thread::~Thread(){

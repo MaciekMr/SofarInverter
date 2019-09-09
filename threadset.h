@@ -8,13 +8,27 @@
 using std::thread;
 using std::map;
 
+/*******************************************
+ *
+ * example https://stackoverflow.com/questions/7909719/c0x-stdfunction-as-a-method-argument
+ *
+ * https://oopscenities.net/2012/02/24/c11-stdfunction-and-stdbind/
+ *
+ * https://stackoverflow.com/questions/22916784/how-should-i-define-a-stdfunction-variable-with-default-arguments
+ *
+ * *****************************************/
+
 class Thread{
 
 private:
     thread * thread_ptr;
 public:
-    template <class T>
-    Thread(std::function<T> *); //Constructor with pointer to method
+    //template <typename ... Params>
+    //Thread(std::function<void (Params && ... p)> task, Params && p ); //Constructor with pointer to method
+
+    template< class Function, class... Args >
+    explicit Thread( Function&& f, Args&&... args );
+
     ~Thread();
     void run();
     void stop();

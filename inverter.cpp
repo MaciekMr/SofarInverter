@@ -50,7 +50,8 @@ void Inverter::update(){
 
     //cretate thread
 
-    //Thread *inverter_thread = new Thread(Worker::client_connect());
+    Thread inverter_thread(std::function<Worker>Worker::client_connect);
+
 
 
     //Get the record
