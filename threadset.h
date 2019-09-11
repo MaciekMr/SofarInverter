@@ -27,7 +27,12 @@ public:
     //Thread(std::function<void (Params && ... p)> task, Params && p ); //Constructor with pointer to method
 
     template< class Function, class... Args >
-    explicit Thread( Function&& f, Args&&... args );
+    explicit Thread(Function&& f, Args&&... args ){
+
+        //thread_ptr = new thread (task);
+        thread_ptr = new std::thread(f, args...);
+    }
+
 
     ~Thread();
     void run();

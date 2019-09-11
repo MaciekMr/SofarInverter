@@ -7,6 +7,7 @@
 Inverter::Inverter()
 {
     timer = new QTimer(this);
+    worker = new Worker(new server_point);
 }
 
 Inverter::~Inverter(){
@@ -50,8 +51,9 @@ void Inverter::update(){
 
     //cretate thread
 
-    Thread inverter_thread(std::function<Worker>Worker::client_connect);
+    //Thread inverter_thread(std::function<Worker>Worker::client_connect, worker);
 
+    Thread inverter_thread(&Worker::client_connect, worker);
 
 
     //Get the record

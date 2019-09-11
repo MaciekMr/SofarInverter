@@ -3,6 +3,7 @@
 #include <QObject>
 #include <QTimer>
 #include <stdio.h>
+#include "connector.h"
 
 using std::string;
 
@@ -14,7 +15,7 @@ private:
     string m_address;
     string m_port;
     QTimer *timer;
-
+    Worker *worker;
     void update();
 
 public:

@@ -10,11 +10,11 @@
 //using boost::fusion::list;
 
 
-class worker;
+class Worker;
 
 typedef std::pair<string *, string *>  target;
 typedef std::pair<unsigned short, target> server_point;
-typedef std::pair<worker *, int *> client_thread;
+typedef std::pair<Worker *, int *> client_thread;
 typedef boost::fusion::list<client_thread *, int> workers;
 
 
@@ -30,6 +30,7 @@ public:
     Worker(server_point *);
     int client_connect();
     int client_disconnect();
+    void comm();
 public slots:
     void update();
 };

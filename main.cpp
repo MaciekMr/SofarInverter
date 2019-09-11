@@ -13,8 +13,6 @@ void test(){
 int main(int argc, char *argv[])
 {
 
-    Thread td(std::function<void(void)> test);
-
     QApplication a(argc, argv);
     /*
 

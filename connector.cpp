@@ -20,6 +20,17 @@ Worker::Worker(server_point *server){
     this->port    = *server->second.second;
 }
 
+void Worker::update(){
+
+
+}
+
+
+void Worker::comm(){
+
+
+}
+
 int Worker::client_connect(){
 
     boost::asio::io_service io_service;
