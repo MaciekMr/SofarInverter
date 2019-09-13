@@ -9,16 +9,16 @@ ConfigModel::ConfigModel()
 void ConfigModel::test(){
 
 
-    string *st = new string("12");
+    string st("12");
 
     this->addparameter<string>("section1","port",st);
-    string *i = findparameter<string>("section1","port");
-    printf("vaule %s",i);
+    string i = findparameter<string>("section1","port");
+    printf("vaule %s",i.c_str());
 
 }
 
 template<class T>
-T* ConfigModel::findparameter(string section, string name){
+T ConfigModel::findparameter(string section, string name){
 
     configurations::iterator it;
     it = config->find(section);
@@ -30,7 +30,7 @@ T* ConfigModel::findparameter(string section, string name){
         parameterlist::iterator parit = parlist->find(name);
         if(parit!=parlist->end()){
 
-            return(reinterpret_cast<T*>(parit->second));
+            return(parit->second);
         }else{
             return(NULL);
         }
@@ -42,7 +42,7 @@ T* ConfigModel::findparameter(string section, string name){
 }
 
 template<class T>
-void ConfigModel::addparameter(string section, string name, T* value){
+void ConfigModel::addparameter(string section, string name, T value){
 
     //find parameters for given section
     configurations::iterator it;
@@ -53,7 +53,7 @@ void ConfigModel::addparameter(string section, string name, T* value){
         par = it->second;
         //param.second = reinterpret_cast<T*>(value);
         //par->push_back(param);
-        par->insert(pair<string, T*>(name, reinterpret_cast<T*>(value)));
+        //par->insert(pair<string, T*>(name, reinterpret_cast<T*>(value)));
 
     }else{
 
@@ -63,7 +63,8 @@ void ConfigModel::addparameter(string section, string name, T* value){
         config->insert(pair<string, parameterlist*>(section, par));
     }
 
-    par->insert(pair<string, T*>(name, reinterpret_cast<T*>(value)));
+    //par->insert(pair<string, T>(name, reinterpret_cast<T>(value)));
+    par->insert(pair<string, T>(name, value));
 }
 
 
@@ -73,5 +74,33 @@ ConfigModel * ConfigModel::getConfig(){
         pointer = new ConfigModel();
     return(pointer);
 }
+
+void ConfigModel::save(std::ofstream &ar){
+
+    //string str("ssss");
+    text_oarchive ta(ar);
+    for(auto const &ent1 : *config){
+
+        //store section
+        ta << (std::string)ent1.first;
+
+        for(auto const &ent2: *ent1.second){
+
+            ta << ent2.first;
+            ta << ent2.second;
+        }
+    }
+
+}
+
+void ConfigModel::load(std::ifstream &ar){
+
+    text_iarchive ta(ar);
+    std::string str("");
+    ta >> str;
+
+    const char * txt = str.c_str();
+}
+
 
 ConfigModel * ConfigModel::pointer;

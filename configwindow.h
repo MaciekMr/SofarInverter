@@ -8,6 +8,7 @@
 #include <QLineEdit>
 #include <QGroupBox>
 #include <QLabel>
+#include <QComboBox>
 #include "boost/archive/text_iarchive.hpp"
 #include "boost/archive/text_oarchive.hpp"
 
@@ -43,6 +44,8 @@ protected:
     QLabel *label;
     QLabel *label_2;
     configuration *conf;
+    QComboBox *confname;
+    QLabel *label_3;
 public:
     ConfigWindow(QWidget *parent);
     void setupUi();
