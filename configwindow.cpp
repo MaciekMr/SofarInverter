@@ -21,6 +21,8 @@ ConfigWindow::ConfigWindow(QWidget * parent){
 
     setupUi();
     conf = nullptr;
+    ConfigModel *conf = ConfigModel::getConfig();
+
 }
 
 void ConfigWindow::configuration::set_ip(string ip){
@@ -96,6 +98,7 @@ void ConfigWindow::setupUi()
 
     tabWidget->setCurrentIndex(0);
 
+    loadconfig();
 
     QMetaObject::connectSlotsByName(this);
 } // setupUi
@@ -131,7 +134,7 @@ void ConfigWindow::accept(){
 
     //folder ./config/
 
-    path myFile = "./configuration/config.dat";
+    path myFile = "./configuration/config.xml";
 
     //Check the existence of file
     if (exists(myFile)){
@@ -139,8 +142,7 @@ void ConfigWindow::accept(){
         ofstream ofs(myFile/*.native()*/);
         conf->save(ofs);
 
-        ifstream ifs(myFile);
-        conf->load(ifs);
+
 
         //ta >> conf; // foo is empty until now, it's fed by myFile
         //std::cout << "Read " << conf.size() << " entries from " << myFile << "\n";
@@ -161,6 +163,22 @@ void ConfigWindow::accept(){
         }
     }
     QDialog::accept();
+}
+
+void ConfigWindow::loadconfig(){
+
+    path myFile = "./configuration/config.dat";
+    ConfigModel *conf = ConfigModel::getConfig();
+    //Check the existence of file
+    if (exists(myFile)){
+
+        ifstream ifs(myFile);
+        conf->load(ifs);
+        //Load to controls
+        //TODO:
+
+    }
+
 }
 
 

@@ -50,6 +50,7 @@ public:
     ConfigWindow(QWidget *parent);
     void setupUi();
     void retranslateUi();
+    void loadconfig();
 
 private slots:
     void accept();

@@ -12,6 +12,10 @@
 #include <boost/serialization/string.hpp>
 #include <boost/serialization/list.hpp>
 #include <boost/filesystem/fstream.hpp>
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/xml_parser.hpp>
+#include <boost/foreach.hpp>
+
 #include <map>
 #include <list>
 
@@ -19,10 +23,13 @@ using std::pair;
 using std::string;
 using std::map;
 using std::list;
+using std::cout;
 using boost::archive::text_oarchive;
 using boost::archive::text_iarchive;
 using boost::filesystem::ifstream;
 using boost::filesystem::ofstream;
+using boost::property_tree::ptree;
+using boost::property_tree::xml_parser::write_xml;
 
 //parameter name, value
 //template <typename T>
@@ -30,6 +37,11 @@ using boost::filesystem::ofstream;
 
 #define IP "IP"
 #define PORT "PORT"
+
+#define SECTION "SECTION"
+#define PARAMETER "PARAMETER"
+
+static auto pretty = boost::property_tree::xml_writer_make_settings<std::string>(' ', 4);
 
 
 template <class T>
@@ -55,6 +67,8 @@ private:
 protected:
     static ConfigModel *pointer;
     configurations     *config;
+    std::string        istring;
+    ptree              proptree;
 public:
     ConfigModel();
     //find a paramtere from given config
