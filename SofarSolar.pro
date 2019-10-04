@@ -27,7 +27,8 @@ SOURCES += \
         mainmenu.cpp \
         mainwindow.cpp \
         threadset.cpp \
-        timer.cpp
+        timer.cpp \
+        xml_parser.cpp
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -39,12 +40,14 @@ HEADERS += \
     configwindow.h \
     connector.h \
     datacollector.h \
+    definitions.h \
     inverter.h \
     logwindow.h \
     mainmenu.h \
     mainwindow.h \
     threadset.h \
-    timer.h
+    timer.h \
+    xml_parser.h
 
 win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../../../../usr/local/boost_1.70/lib/release/ -lboost_filesystem-gcc9-mt-x64-1_70
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../../../../usr/local/boost_1.70/lib/debug/ -lboost_filesystem-gcc9-mt-x64-1_70
