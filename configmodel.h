@@ -15,6 +15,7 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/foreach.hpp>
+#include "definitions.h"
 
 #include <map>
 #include <list>
@@ -35,11 +36,6 @@ using boost::property_tree::xml_parser::write_xml;
 //template <typename T>
 //typedef pair<string, T*> parameter<T>;
 
-#define IP "IP"
-#define PORT "PORT"
-
-#define SECTION "SECTION"
-#define PARAMETER "PARAMETER"
 
 static auto pretty = boost::property_tree::xml_writer_make_settings<std::string>(' ', 4);
 

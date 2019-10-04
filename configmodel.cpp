@@ -111,15 +111,15 @@ void ConfigModel::save(std::ofstream &ar){
     for(auto const &ent1 : *config){
         count ++;
 
-        ptree * section = &proptree.add_child("main.SECTION", ptree());
+        ptree * section = &proptree.add_child(CONFIG_PATH, ptree());
 
-        section->add("<xmlattr>.id", count);
-        section->add("INVERTER_NAME", ent1.first);
+        section->add(CREATE_PATH(XML_ATTR,ID), count);
+        section->add(CREATE_PATH(PARAMETERS,INV_NAME), ent1.first);
 
 
         for(auto const &ent2: *ent1.second){
 
-            param.assign("PARAMETERS.");
+            param.assign(CREATE_PATH(PARAMETERS,DOT));
             param.append(ent2.first);
             //owner.add_child(param, ent2.second);
             //owner.add(param, ent2.second);
