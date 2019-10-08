@@ -65,6 +65,10 @@ void ConfigWindow::setupUi()
     tabWidget->setFocusPolicy(Qt::ClickFocus);
     tab = new QWidget();
     tab->setObjectName(QString::fromUtf8("tab"));
+    confname = new QComboBox(tab);
+    confname->setObjectName(QString::fromUtf8("comboBox"));
+    confname->setGeometry(QRect(20, 50, 261, 26));
+    confname->setEditable(true);
     ip_address = new QLineEdit(tab);
     ip_address->setObjectName(QString::fromUtf8("lineEdit"));
     ip_address->setGeometry(QRect(20, 120, 311, 31));
@@ -80,10 +84,6 @@ void ConfigWindow::setupUi()
     label_2 = new QLabel(tab);
     label_2->setObjectName(QString::fromUtf8("label_2"));
     label_2->setGeometry(QRect(20, 160, 101, 18));
-    confname = new QComboBox(tab);
-    confname->setObjectName(QString::fromUtf8("comboBox"));
-    confname->setGeometry(QRect(20, 50, 261, 26));
-    confname->setEditable(true);
     label_3 = new QLabel(tab);
     label_3->setObjectName(QString::fromUtf8("label_3"));
     label_3->setGeometry(QRect(20, 20, 101, 18));
@@ -124,17 +124,20 @@ void ConfigWindow::accept(){
 
     string ip(ip_address->text().toStdString());
     string port(port_number->text().toStdString());
+    string inverter(confname->currentText().toStdString());
 
     ConfigModel *conf = ConfigModel::getConfig();
-
-    conf->addparameter<std::string>(confname->currentText().toStdString(), IP, ip);
-    conf->addparameter<std::string>(confname->currentText().toStdString(), PORT, port);
+    int id = conf->getelementcount() + 1;
+    string _local_id = std::to_string(id);
+    conf->addparameter<std::string>(_local_id, INV_NAME, inverter);
+    conf->addparameter<std::string>(_local_id, IP, ip);
+    conf->addparameter<std::string>(_local_id, PORT, port);
 
     //Save configuration
 
     //folder ./config/
 
-    path myFile = "./configuration/config.xml";
+    path myFile = CONF_FILE;
 
     //Check the existence of file
     if (exists(myFile)){
@@ -167,13 +170,21 @@ void ConfigWindow::accept(){
 
 void ConfigWindow::loadconfig(){
 
-    path myFile = "./configuration/config.dat";
+    path myFile = CONF_FILE;
     ConfigModel *conf = ConfigModel::getConfig();
     //Check the existence of file
     if (exists(myFile)){
 
         ifstream ifs(myFile);
-        conf->load(ifs);
+        try {
+            conf->load(ifs);
+
+        } catch (ptree_error) {
+
+            //TODO
+            //Log error to file
+        }
+
         //Load to controls
         //TODO:
 

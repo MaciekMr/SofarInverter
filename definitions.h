@@ -3,6 +3,9 @@
 
 #endif // DEFINITIONS_H
 
+
+#define CONF_FILE    std::string("./configuration/config.xml")
+
 #define CONFIG_PATH  std::string("main.CONFIGURATIONS")
 #define SECTION_PATH std::string("SECTION")
 #define XML_ATTR     std::string("<xmlattr>")

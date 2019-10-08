@@ -4,6 +4,7 @@
 ConfigModel::ConfigModel()
 {
     config = new configurations();
+
 }
 
 
@@ -48,6 +49,7 @@ void ConfigModel::addparameter(string section, string name, T value){
     //find parameters for given section
     configurations::iterator it;
     parameterlist * par;
+    std::cout<<"sect:"<<section<<" name:"<<name<<std::endl;
     it = config->find(section);
     if(it != config->end()){
 
@@ -111,97 +113,39 @@ void ConfigModel::save(std::ofstream &ar){
     for(auto const &ent1 : *config){
         count ++;
 
-        ptree * section = &proptree.add_child(CONFIG_PATH, ptree());
+        ptree * section = &proptree.add_child(CREATE_PATH(CONFIG_PATH,SECTION_PATH), ptree());
 
         section->add(CREATE_PATH(XML_ATTR,ID), count);
-        section->add(CREATE_PATH(PARAMETERS,INV_NAME), ent1.first);
+        //section->add(CREATE_PATH(PARAMETERS,INV_NAME), ent1.first);
 
 
         for(auto const &ent2: *ent1.second){
-
-            param.assign(CREATE_PATH(PARAMETERS,DOT));
-            param.append(ent2.first);
+            param.clear();
+            param.append(CREATE_PATH(PARAMETERS,ent2.first));
             //owner.add_child(param, ent2.second);
             //owner.add(param, ent2.second);
             section->add(param, ent2.second);
+            std::cout<<ent2.first<<":"<<param<<"->"<<ent2.second<<std::endl;
         }
     }
     write_xml(ar,proptree,pretty);
     //write_xml(nullptr, proptree);
 }
 
-void ConfigModel::load(std::ifstream &ar){
+void ConfigModel::load(ifstream &ar){
 
-    /*
-    text_iarchive ta(ar);
-    istring = ("");
-    std::string _section("");
-    std::string _param_name("");
-    std::string _param_val("");
-    //ta >> istring;
 
-    while(ar.peek() != EOF ){
-
-         ta >> istring;
-         QMessageBox msg(QMessageBox::Icon::Information, "Info", QString(istring.c_str()));
-         msg.exec();
-
-         if(istring.compare("<SECTION>")){
-
-             printf("SECTION");
-             ta >> _section;
-
-        }
-        if(istring.compare("<PARAMETER>")){
-
-            printf("PARAMETER");
-            ta >> _param_name;
-            ta >> _param_val;
-        }
-
-    }
-
-    */
     proptree.clear();
-    read_xml(ar, proptree);
-
-    /*
-    ptree& sec1 = proptree.get_child("main.SECTION");
-    int      id = sec1.get<int>("<xmlattr>.id");
-    string name = sec1.get<std::string>("INVERTER_NAME");
-    */
-    BOOST_FOREACH( boost::property_tree::ptree::value_type const& node, proptree.get_child( "main" ) )
-    {
-        boost::property_tree::ptree subtree = node.second;
-
-        if( node.first == "SECTION" )
-        {
-            //node.second keeps the <xmlattr>
-            //int id = node.second.get<int>("<xmlattr>");
-
-            //string name = node.second.get<string>("INVERTER_NAME");
-            BOOST_FOREACH( boost::property_tree::ptree::value_type const& v, subtree.get_child( "SECTION" ) )
-            {
-                std::string label = v.first;
-
-                if ( label != "<xmlattr>" )
-                {
-                    std::string value = subtree.get<std::string>( label );
-                    std::cout << label << ":  " << value << std::endl;
-                }
-            }
-            std::cout << std::endl;
-        }
-    }
-    //get inverter name
-
-
-
-    //QMessageBox()
+    load_xml(ar);
 
 }
 
+bool ConfigModel::addparameter(string part, string parameter, string value){
 
+    std::cout<<part<<":"<<parameter<<"->"<<value<<std::endl;
+    addparameter<string>(part, parameter, value);
+    return true;
+}
 
 
 

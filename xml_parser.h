@@ -37,17 +37,30 @@ using boost::filesystem::ofstream;
 using boost::property_tree::ptree;
 using boost::property_tree::xml_parser::write_xml;
 
+
+typedef map<string, string> parameterlist;
+typedef map<string, parameterlist *> configurations;
+
 static auto pretty = boost::property_tree::xml_writer_make_settings<std::string>(' ', 4);
 
-class XML_PARSER
+class xmlparser
 {
 private:
     ptree  pt;
+    configurations * _conf;
+    string          _filename;
+    string          _id; //related to CONFIG ID
 protected:
     void showchildelements(ptree pt, string _label = "");
+    ifstream *_ifs;
 public:
-    XML_PARSER();
-    void traverse_xml(string filename);
+    xmlparser();
+    ~xmlparser();
+    void traverse_xml();
+    int load_xml(string filename);
+    int load_xml(ifstream &ifs);
+    virtual int getelementcount();
+    virtual bool addparameter(string part, string parameter, string value);
 
 };
 

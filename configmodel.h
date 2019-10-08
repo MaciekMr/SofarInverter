@@ -14,8 +14,10 @@
 #include <boost/filesystem/fstream.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
+#include <boost/property_tree/exceptions.hpp>
 #include <boost/foreach.hpp>
 #include "definitions.h"
+#include "xml_parser.h"
 
 #include <map>
 #include <list>
@@ -30,14 +32,12 @@ using boost::archive::text_iarchive;
 using boost::filesystem::ifstream;
 using boost::filesystem::ofstream;
 using boost::property_tree::ptree;
+using boost::property_tree::ptree_error;
 using boost::property_tree::xml_parser::write_xml;
 
 //parameter name, value
 //template <typename T>
 //typedef pair<string, T*> parameter<T>;
-
-
-static auto pretty = boost::property_tree::xml_writer_make_settings<std::string>(' ', 4);
 
 
 template <class T>
@@ -53,18 +53,19 @@ public:
 
 //typedef pair<string, string> parameter;
 //configuration name, list of paramteres
-typedef map<string, string> parameterlist;
-typedef map<string, parameterlist *> configurations;
 
-class ConfigModel
+
+class ConfigModel: public xmlparser
 {
 private:
     friend class boost::serialization::access;
+
 protected:
     static ConfigModel *pointer;
     configurations     *config;
     std::string        istring;
     ptree              proptree;
+
 public:
     ConfigModel();
     //find a paramtere from given config
@@ -77,7 +78,7 @@ public:
     void test();
 
     void save(std::ofstream &ar);
-    void load(std::ifstream &ar);
+    void load(ifstream &ifs);
 
     template <typename Archive>
     void serialize(Archive &ar, const unsigned int version){
@@ -96,7 +97,7 @@ public:
         }
         */
     }
-
+    bool addparameter(string part, string parameter, string value);
     static ConfigModel * getConfig();
 };
 
