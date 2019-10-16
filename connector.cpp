@@ -18,6 +18,7 @@ Worker::Worker(server_point *server){
 
     this->address = *server->second.first;
     this->port    = *server->second.second;
+
 }
 
 void Worker::update(){

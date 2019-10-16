@@ -3,10 +3,15 @@
 #include "QtWidgets/QMainWindow"
 #include "QtWidgets/QLabel"
 #include "QtWidgets/QVBoxLayout"
+#include "configmodel.h"
 
 MainWindow::MainWindow(QWidget *parent) : QMainWindow(parent)
 {
     setupUI(parent);
+
+    ConfigModel *conf = ConfigModel::getConfig();
+    conf->load();
+
 }
 
 

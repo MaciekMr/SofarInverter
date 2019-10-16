@@ -15,10 +15,10 @@
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/xml_parser.hpp>
 #include <boost/property_tree/exceptions.hpp>
+#include <boost/filesystem.hpp>
 #include <boost/foreach.hpp>
 #include "definitions.h"
 #include "xml_parser.h"
-
 #include <map>
 #include <list>
 
@@ -27,6 +27,8 @@ using std::string;
 using std::map;
 using std::list;
 using std::cout;
+
+using boost::filesystem::path;
 using boost::archive::text_oarchive;
 using boost::archive::text_iarchive;
 using boost::filesystem::ifstream;
@@ -53,9 +55,11 @@ public:
 
 //typedef pair<string, string> parameter;
 //configuration name, list of paramteres
+typedef pair<int,string> header;
+typedef list<header> header_list;
 
 
-class ConfigModel: public xmlparser
+class ConfigModel: private xmlparser
 {
 private:
     friend class boost::serialization::access;
@@ -79,6 +83,7 @@ public:
 
     void save(std::ofstream &ar);
     void load(ifstream &ifs);
+    void load();
 
     template <typename Archive>
     void serialize(Archive &ar, const unsigned int version){
@@ -98,7 +103,13 @@ public:
         */
     }
     bool addparameter(string part, string parameter, string value);
+    int getelementcount();
+
+
+
     static ConfigModel * getConfig();
+    const header_list * getheaders();
+
 };
 
 #endif // CONFIGMODEL_H

@@ -7,6 +7,21 @@
 
 using std::string;
 
+
+
+/****************************************************
+ *
+ * class Inverter
+ *
+ * present a single converter to connect to
+ * Using worker to establish connection to inverter
+ * It collect data from inverter every given period
+ * (set by timer)
+ *
+ * **************************************************/
+
+
+
 class Inverter: public QObject
 {
 
@@ -21,7 +36,7 @@ private:
 public:
     Inverter();
     ~Inverter();
-    void setup();
+    void setup(string inv_id);
 };
 
 #endif // INVERTER_H

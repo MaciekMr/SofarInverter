@@ -3,7 +3,7 @@ QT += core gui widgets
 
 CONFIG += c++17
 
-
+RC_ICONS = resources/inverter.ico
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
 # depend on your compiler). Please consult the documentation of the
@@ -22,6 +22,7 @@ SOURCES += \
         connector.cpp \
         datacollector.cpp \
         inverter.cpp \
+        inverterselection.cpp \
         logwindow.cpp \
         main.cpp \
         mainmenu.cpp \
@@ -42,6 +43,7 @@ HEADERS += \
     datacollector.h \
     definitions.h \
     inverter.h \
+    inverterselection.h \
     logwindow.h \
     mainmenu.h \
     mainwindow.h \

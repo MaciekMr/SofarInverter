@@ -6,10 +6,11 @@
 #include <boost/filesystem/fstream.hpp>
 #include "boost/archive/text_iarchive.hpp"
 #include "boost/archive/text_oarchive.hpp"
-#include "configmodel.h"
 #include <iostream>
+#include "configmodel.h"
 
-using boost::filesystem::path;
+
+
 using boost::filesystem::ifstream;
 using boost::filesystem::ofstream;
 using boost::archive::text_iarchive;
@@ -17,11 +18,12 @@ using boost::archive::text_oarchive;
 
 
 
-ConfigWindow::ConfigWindow(QWidget * parent){
+ConfigWindow::ConfigWindow(QWidget * parent):QDialog(parent){
 
     setupUi();
     conf = nullptr;
-    ConfigModel *conf = ConfigModel::getConfig();
+
+    //ConfigModel *conf = ConfigModel::getConfig();
 
 }
 
@@ -58,6 +60,7 @@ void ConfigWindow::setupUi()
     buttonBox->setGeometry(QRect(340, 350, 341, 32));
     buttonBox->setOrientation(Qt::Horizontal);
     buttonBox->setStandardButtons(QDialogButtonBox::Cancel|QDialogButtonBox::Ok);
+
     tabWidget = new QTabWidget(this);
     tabWidget->setObjectName(QString::fromUtf8("tabWidget"));
     tabWidget->setGeometry(QRect(10, 60, 671, 281));
@@ -71,7 +74,7 @@ void ConfigWindow::setupUi()
     confname->setEditable(true);
     ip_address = new QLineEdit(tab);
     ip_address->setObjectName(QString::fromUtf8("lineEdit"));
-    ip_address->setGeometry(QRect(20, 120, 311, 31));
+    ip_address->setGeometry(QRect(20, 120, 161, 31));
     ip_address->setTabletTracking(true);
     ip_address->setFocusPolicy(Qt::ClickFocus);
     ip_address->setInputMask(tr("000.000.000.000; "));
@@ -87,20 +90,30 @@ void ConfigWindow::setupUi()
     label_3 = new QLabel(tab);
     label_3->setObjectName(QString::fromUtf8("label_3"));
     label_3->setGeometry(QRect(20, 20, 101, 18));
+    buttonNew = new QPushButton(tab);
+    buttonNew->setObjectName(QString::fromUtf8("buttonNew"));
+    buttonNew->setGeometry(QRect(210, 120, 80, 26));
     tabWidget->addTab(tab, QString());
     tab_2 = new QWidget();
     tab_2->setObjectName(QString::fromUtf8("tab_2"));
     tabWidget->addTab(tab_2, QString());
 
     retranslateUi();
-    QObject::connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));
-    QObject::connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
-
+    /* old way to connect
+    connect(buttonBox, SIGNAL(accepted()), this, SLOT(accept()));  //QObject::connect
+    connect(buttonBox, SIGNAL(rejected()), this, SLOT(reject()));
+    */
+    /**** c++11 way to use */
+    connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigWindow::accept);
+    connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigWindow::reject);
+    connect(buttonNew, &QPushButton::clicked, this, &ConfigWindow::new_config);
     tabWidget->setCurrentIndex(0);
 
     loadconfig();
 
     QMetaObject::connectSlotsByName(this);
+
+    setconfigs();
 } // setupUi
 
 void ConfigWindow::retranslateUi()
@@ -109,6 +122,7 @@ void ConfigWindow::retranslateUi()
     label->setText(QCoreApplication::translate("ConfigDialog", "IP address", nullptr));
     label_2->setText(QCoreApplication::translate("ConfigDialog", "Port number", nullptr));
     label_3->setText(QCoreApplication::translate("ConfigDialog", "Name", nullptr));
+    buttonNew->setText(QCoreApplication::translate("ConfigDialog", "New ...", nullptr));
     tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("ConfigDialog", "Connection", nullptr));
     tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("ConfigDialog", "Tab 2", nullptr));
 } // retranslateUi
@@ -170,25 +184,6 @@ void ConfigWindow::accept(){
 
 void ConfigWindow::loadconfig(){
 
-    path myFile = CONF_FILE;
-    ConfigModel *conf = ConfigModel::getConfig();
-    //Check the existence of file
-    if (exists(myFile)){
-
-        ifstream ifs(myFile);
-        try {
-            conf->load(ifs);
-
-        } catch (ptree_error) {
-
-            //TODO
-            //Log error to file
-        }
-
-        //Load to controls
-        //TODO:
-
-    }
 
 }
 
@@ -207,4 +202,27 @@ void ConfigWindow::configuration::serialize(text_iarchive & ar, const unsigned i
 void ConfigWindow::reject(){
 
     QDialog::reject();
+}
+
+void ConfigWindow::new_config(){
+
+    QMessageBox info;
+    info.setText(tr("Are you sure?"));
+    info.exec();
+
+}
+
+
+void ConfigWindow::setconfigs(){
+
+    ConfigModel *conf = ConfigModel::getConfig();
+
+    int i = conf->getelementcount();
+
+    for(const auto & [id, name] : *conf->getheaders()){
+
+        std::cout<<"header:"<<name<<std::endl;
+        confname->addItem(QString::fromStdString(name));
+    }
+
 }

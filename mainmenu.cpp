@@ -3,6 +3,7 @@
 #include "mainwindow.h"
 #include "logwindow.h"
 #include "datacollector.h"
+#include "inverterselection.h"
 
 MainMenu::MainMenu(QMainWindow *parent) : parent(parent)
 {
@@ -53,6 +54,10 @@ void MainMenu::connect(){
     QObject * obj = DataCollector::getDataCollector()->findView("logwindow");
     ((LogWindow *)obj)->appendPlainText(tr("Connection to:"));
 
+    //Select the configuration to run
+    InverterSelection *invselect = new InverterSelection(this);
+    invselect->addelement();
+    invselect->show();
     //We need to do following steps:
     //1. Establish timer
     //2. Connect timer with simple thread (to ensure the refresh is happened every second

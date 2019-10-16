@@ -18,6 +18,24 @@ typedef std::pair<Worker *, int *> client_thread;
 typedef boost::fusion::list<client_thread *, int> workers;
 
 
+
+/*************************************************
+ * class Worker
+ *
+ * Single connect thread, connected to single inverter
+ * the status is refreshed by given interval, connected to
+ * timer. Each worker class will be triggered by timer
+ *
+ * When the data is collected (raw data) it will be transfered to
+ * decoding class.
+ * Worker has a status connected = true. If connected to inverter.
+ * If connected = false, the worker will try to reconnect
+ * Worker will try to collect data in one shot
+ *
+ * Used by Inverter class
+ *
+ * ************************************************/
+
 class Worker{
 
 private:

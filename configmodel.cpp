@@ -1,12 +1,14 @@
 #include <QMessageBox>
 #include "configmodel.h"
 
+
+ConfigModel * ConfigModel::pointer;
+
 ConfigModel::ConfigModel()
 {
     config = new configurations();
 
 }
-
 
 void ConfigModel::test(){
 
@@ -69,7 +71,6 @@ void ConfigModel::addparameter(string section, string name, T value){
     //par->insert(pair<string, T>(name, reinterpret_cast<T>(value)));
     par->insert(pair<string, T>(name, value));
 }
-
 
 ConfigModel * ConfigModel::getConfig(){
 
@@ -134,10 +135,32 @@ void ConfigModel::save(std::ofstream &ar){
 
 void ConfigModel::load(ifstream &ar){
 
-
     proptree.clear();
     load_xml(ar);
 
+}
+
+
+void ConfigModel::load(){
+
+    path myFile = CONF_FILE;
+    //Check the existence of file
+    if (exists(myFile)){
+
+        ifstream ifs(myFile);
+        try {
+            load(ifs);
+
+        } catch (ptree_error) {
+
+            //TODO
+            //Log error to file
+        }
+
+        //Load to controls
+        //TODO:
+
+    }
 }
 
 bool ConfigModel::addparameter(string part, string parameter, string value){
@@ -147,6 +170,24 @@ bool ConfigModel::addparameter(string part, string parameter, string value){
     return true;
 }
 
+int ConfigModel::getelementcount(){
 
+    return(config->size());
+}
 
-ConfigModel * ConfigModel::pointer;
+const header_list * ConfigModel::getheaders(){
+
+    header_list * hdr = new header_list();
+
+    for (const auto& [name, params] : *config) {
+        for (const auto& [map_hdr, map_value] : *params){
+            std::cout << "Planet " << name << ":\n" << map_hdr << "\n\n";
+            if(map_hdr == INV_NAME){
+                hdr->push_back(std::make_pair(std::stoi(name), map_value));
+                break;
+            }
+        }
+    }
+
+    return (hdr);
+}

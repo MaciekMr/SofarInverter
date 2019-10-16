@@ -46,13 +46,13 @@ static auto pretty = boost::property_tree::xml_writer_make_settings<std::string>
 class xmlparser
 {
 private:
-    ptree  pt;
-    configurations * _conf;
+    ptree           pt;
     string          _filename;
     string          _id; //related to CONFIG ID
 protected:
     void showchildelements(ptree pt, string _label = "");
     ifstream *_ifs;
+    //configurations * _conf;
 public:
     xmlparser();
     ~xmlparser();

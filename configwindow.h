@@ -9,15 +9,43 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QComboBox>
+#include <QPushButton>
 #include "boost/archive/text_iarchive.hpp"
 #include "boost/archive/text_oarchive.hpp"
+#include "configmodel.h"
 
 using std::string;
 using boost::archive::text_iarchive;
 using boost::archive::text_oarchive;
 
-class ConfigWindow : public QDialog
+
+struct controlls{
+
+    QDialogButtonBox *buttonBox;
+    QPushButton      *buttonNew;
+    QTabWidget       *tabWidget;
+    QWidget          *tab;
+    QLineEdit        *ip_address;
+    QGroupBox        *groupBox;
+    QLineEdit        *port_number;
+    QGroupBox        *groupBox_2;
+    QWidget          *tab_2;
+    QLabel           *label;
+    QLabel           *label_2;
+    configurations   *conf;
+    QComboBox        *confname;
+    QLabel           *label_3;
+
+};
+
+
+class ConfigWindow : public QDialog, ConfigModel, controlls
 {
+
+    Q_OBJECT
+
+protected:
+
 
     class configuration{
     protected:
@@ -33,28 +61,19 @@ class ConfigWindow : public QDialog
     };
 
 protected:
-    QDialogButtonBox *buttonBox;
-    QTabWidget  *tabWidget;
-    QWidget     *tab;
-    QLineEdit   *ip_address;
-    QGroupBox   *groupBox;
-    QLineEdit   *port_number;
-    QGroupBox   *groupBox_2;
-    QWidget     *tab_2;
-    QLabel *label;
-    QLabel *label_2;
-    configuration *conf;
-    QComboBox *confname;
-    QLabel *label_3;
+
+private:
+    void setconfigs();
 public:
     ConfigWindow(QWidget *parent);
     void setupUi();
     void retranslateUi();
     void loadconfig();
 
-private slots:
+public slots:
     void accept();
     void reject();
+    void new_config();
 };
 
 #endif // CONFIGWINDOW_H
