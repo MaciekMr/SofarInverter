@@ -27,6 +27,7 @@ SOURCES += \
         main.cpp \
         mainmenu.cpp \
         mainwindow.cpp \
+        singleton.cpp \
         threadset.cpp \
         timer.cpp \
         xml_parser.cpp
@@ -47,6 +48,7 @@ HEADERS += \
     logwindow.h \
     mainmenu.h \
     mainwindow.h \
+    singleton.h \
     threadset.h \
     timer.h \
     xml_parser.h

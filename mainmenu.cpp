@@ -20,12 +20,8 @@ void MainMenu::createActions(){
     newfileAct->setStatusTip(tr("Create a new configuration"));
     QObject::connect(newfileAct, &QAction::triggered, this, &MainMenu::newFile);
 
-
-
-
     connectAct = new QAction(tr("Connect"), this);
     connectAct->setStatusTip(tr("Create a new configuration"));
-
     QObject::connect(connectAct, &QAction::triggered, this, &MainMenu::connect);
 
     fileMenu = menuBar->addMenu(tr("&File"));

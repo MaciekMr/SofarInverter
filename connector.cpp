@@ -2,6 +2,7 @@
 #include <iostream>
 #include "boost/asio.hpp"
 #include "boost/system/error_code.hpp"
+#include "configmodel.h"
 
 using namespace boost::asio;
 using ip::tcp;
@@ -9,17 +10,44 @@ using std::string;
 using std::cout;
 using std::endl;
 
+
+
+Connector *Connector::_connector;
+
 Connector::Connector()
 {
+    workers = new workermap();
+}
+
+Worker::Worker(int id){
+
+    ConfigModel *conf = ConfigModel::getConfig();
+
+    this->address = conf->findparameter<string>(std::to_string(id), IP);
+    this->port    = conf->findparameter<string>(std::to_string(id), PORT);;
 
 }
 
-Worker::Worker(server_point *server){
+const Connector * Connector::getConnector(){
 
-    this->address = *server->second.first;
-    this->port    = *server->second.second;
+    if(!_connector)
+        _connector = new Connector();
+    return (_connector);
+}
+
+
+void Connector::addWorker(Worker *_worker){
+
+    workers->insert(pair(_worker->getid(), _worker));
+}
+
+void Connector::killWorker(int id){
 
 }
+
+
+
+/**********************************WORKER******************************************************/
 
 void Worker::update(){
 
@@ -60,4 +88,9 @@ int Worker::client_connect(){
         cout << data << endl;
     }
     return 0;
+}
+
+int Worker::getid(){
+
+    return(worker_id);
 }

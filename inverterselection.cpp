@@ -1,6 +1,7 @@
 #include "inverterselection.h"
 #include <QPixmap>
 #include "configmodel.h"
+#include "connector.h"
 
 InverterSelection::InverterSelection(QWidget *parent) :
     QDialog(parent)
@@ -59,7 +60,8 @@ void InverterSelection::addelement(){
         QPixmap qpm(inverter_ico);
         QIcon qi(qpm);
         lwi->setIcon(qi);
-        lwi->setText(QString::fromStdString(name + std::to_string(id)));
+        lwi->setText(QString::fromStdString(name));
+        lwi->setData(0x0100, id);
         listView->addItem(lwi);
 
         //confname->addItem(QString::fromStdString(name));
@@ -92,12 +94,27 @@ void InverterSelection::accept(){
     QList lst = listView->selectedItems();
     std::cout<< lst.count() << "selected" <<std::endl;
 
+    int id = 0;
     if(lst.count() > 0){
+
+        const Connector *conn = Connector::getConnector();
 
         for(const auto & item : lst){
 
-            std::cout << item->text().toStdString() << std::endl;
+            id = item->data(0x100).toInt();
+            std::cout << item->text().toStdString() <<"  id:" << id << std::endl;
+
             //Start worker with given id
+
+            //Create a Worker class
+
+            Worker * worker = new Worker(id);
+
+            //Configure Worker - IP, PORT
+
+
+            //Add Worker to pool
+            conn->addWorker(worker);
 
         }
 

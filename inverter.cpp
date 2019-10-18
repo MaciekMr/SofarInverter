@@ -40,7 +40,7 @@ void Inverter::setup(string inv_id){
     //set the server_point
     target _target(&m_address, &m_port);
     //Create Worker
-    worker = new Worker(new server_point(1, _target));
+    worker = new Worker(std::stoi(inv_id));
 
     // - get the pointer to logger
 

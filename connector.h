@@ -4,11 +4,13 @@
 #include <QObject>
 #include <boost/fusion/include/pair.hpp>
 #include <boost/fusion/include/list.hpp>
+#include <map>
 #include "configwindow.h"
 
 //using boost::fusion::pair;
 //using boost::fusion::list;
 
+using std::map;
 
 class Worker;
 
@@ -45,20 +47,39 @@ private:
     int    worker_id;
 
 public:
-    Worker(server_point *);
+    Worker(int id); //config id
     int client_connect();
     int client_disconnect();
     void comm();
+    int getid();
 public slots:
     void update();
 };
 
+
+/********************************************
+ *
+ * class Connector
+ * keeps the pointers to all workers (threads)
+ * it is static class
+ * We can close any thread at any time by id
+ *
+ * ********************************************/
+
+typedef map<int, Worker*> workermap;
+
 class Connector
 {
 private:
-
+    static Connector * _connector;
+    workermap * workers;
 public:
     Connector();
+    ~Connector();
+    static const Connector * getConnector();
+    void addWorker(Worker *);
+    void killWorker(int id);
+
 };
 
 #endif // CONNECTOR_H
