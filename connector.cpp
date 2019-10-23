@@ -14,18 +14,9 @@ using std::endl;
 
 Connector *Connector::_connector;
 
-Connector::Connector()
+Connector::Connector():ThreadSet()
 {
     workers = new workermap();
-}
-
-Worker::Worker(int id){
-
-    ConfigModel *conf = ConfigModel::getConfig();
-
-    this->address = conf->findparameter<string>(std::to_string(id), IP);
-    this->port    = conf->findparameter<string>(std::to_string(id), PORT);;
-
 }
 
 const Connector * Connector::getConnector(){
@@ -36,18 +27,31 @@ const Connector * Connector::getConnector(){
 }
 
 
-void Connector::addWorker(Worker *_worker){
+void Connector::addWorker(Worker *_worker) const{
 
     workers->insert(pair(_worker->getid(), _worker));
+
 }
 
 void Connector::killWorker(int id){
 
 }
 
+void Connector::runWorker(int id){
 
+
+}
 
 /**********************************WORKER******************************************************/
+
+Worker::Worker(int id):Thread(&Worker::comm, this){
+
+    ConfigModel *conf = ConfigModel::getConfig();
+
+    this->address = conf->findparameter<string>(std::to_string(id), IP);
+    this->port    = conf->findparameter<string>(std::to_string(id), PORT);;
+
+}
 
 void Worker::update(){
 
@@ -55,9 +59,13 @@ void Worker::update(){
 }
 
 
+[[ noreturn ]]
 void Worker::comm(){
 
+    while(true){
 
+        std::cout<<"Thread id:"<<this->thread_ptr->get_id()<<std::endl;
+    }
 }
 
 int Worker::client_connect(){

@@ -5,6 +5,7 @@
 #include <boost/fusion/include/pair.hpp>
 #include <boost/fusion/include/list.hpp>
 #include <map>
+#include "threadset.h"
 #include "configwindow.h"
 
 //using boost::fusion::pair;
@@ -38,8 +39,8 @@ typedef boost::fusion::list<client_thread *, int> workers;
  *
  * ************************************************/
 
-class Worker{
-
+class Worker:private Thread
+{
 private:
     bool connected;
     string address;
@@ -50,6 +51,7 @@ public:
     Worker(int id); //config id
     int client_connect();
     int client_disconnect();
+    [[ noreturn ]]
     void comm();
     int getid();
 public slots:
@@ -68,7 +70,7 @@ public slots:
 
 typedef map<int, Worker*> workermap;
 
-class Connector
+class Connector:private ThreadSet
 {
 private:
     static Connector * _connector;
@@ -77,8 +79,9 @@ public:
     Connector();
     ~Connector();
     static const Connector * getConnector();
-    void addWorker(Worker *);
+    void addWorker(Worker *) const;
     void killWorker(int id);
+    void runWorker(int id);
 
 };
 

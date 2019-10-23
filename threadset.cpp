@@ -20,3 +20,8 @@ ThreadSet::ThreadSet(){
 
 
 }
+
+ThreadSet::~ThreadSet(){
+
+
+}

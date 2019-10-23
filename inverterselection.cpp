@@ -109,7 +109,6 @@ void InverterSelection::accept(){
             //Create a Worker class
 
             Worker * worker = new Worker(id);
-
             //Configure Worker - IP, PORT
 
 

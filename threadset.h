@@ -20,7 +20,7 @@ using std::map;
 
 class Thread{
 
-private:
+protected:
     thread * thread_ptr;
 public:
     //template <typename ... Params>
