@@ -96,6 +96,32 @@ void ConfigWindow::setupUi()
     tabWidget->addTab(tab, QString());
     tab_2 = new QWidget();
     tab_2->setObjectName(QString::fromUtf8("tab_2"));
+    lineEdit_3 = new QLineEdit(tab_2);
+    lineEdit_3->setObjectName(QString::fromUtf8("lineEdit_3"));
+    lineEdit_3->setGeometry(QRect(20, 40, 181, 26));
+    lineEdit_4 = new QLineEdit(tab_2);
+    lineEdit_4->setObjectName(QString::fromUtf8("lineEdit_4"));
+    lineEdit_4->setGeometry(QRect(20, 90, 181, 26));
+    lineEdit_5 = new QLineEdit(tab_2);
+    lineEdit_5->setObjectName(QString::fromUtf8("lineEdit_5"));
+    lineEdit_5->setGeometry(QRect(20, 140, 181, 26));
+    label_4 = new QLabel(tab_2);
+    label_4->setObjectName(QString::fromUtf8("label_4"));
+    label_4->setGeometry(QRect(20, 20, 101, 18));
+    label_5 = new QLabel(tab_2);
+    label_5->setObjectName(QString::fromUtf8("label_5"));
+    label_5->setGeometry(QRect(20, 70, 58, 18));
+    label_6 = new QLabel(tab_2);
+    label_6->setObjectName(QString::fromUtf8("label_6"));
+    label_6->setGeometry(QRect(20, 120, 58, 18));
+    lineEdit_6 = new QLineEdit(tab_2);
+    lineEdit_6->setObjectName(QString::fromUtf8("lineEdit_6"));
+    lineEdit_6->setGeometry(QRect(20, 190, 181, 26));
+    lineEdit_6->setEchoMode(QLineEdit::Password);
+    label_7 = new QLabel(tab_2);
+    label_7->setObjectName(QString::fromUtf8("label_7"));
+    label_7->setGeometry(QRect(20, 170, 101, 18));
+    tabWidget->addTab(tab_2, QString());
     tabWidget->addTab(tab_2, QString());
 
     retranslateUi();
@@ -123,6 +149,11 @@ void ConfigWindow::retranslateUi()
     label_2->setText(QCoreApplication::translate("ConfigDialog", "Port number", nullptr));
     label_3->setText(QCoreApplication::translate("ConfigDialog", "Name", nullptr));
     buttonNew->setText(QCoreApplication::translate("ConfigDialog", "New ...", nullptr));
+    lineEdit_3->setInputMask(QCoreApplication::translate("ConfigDialog", "000.000.000.000;_", nullptr));
+    label_4->setText(QCoreApplication::translate("ConfigDialog", "DB IP address", nullptr));
+    label_5->setText(QCoreApplication::translate("ConfigDialog", "DB name", nullptr));
+    label_6->setText(QCoreApplication::translate("ConfigDialog", "DB User", nullptr));
+    label_7->setText(QCoreApplication::translate("ConfigDialog", "DB password", nullptr));
     tabWidget->setTabText(tabWidget->indexOf(tab), QCoreApplication::translate("ConfigDialog", "Connection", nullptr));
     tabWidget->setTabText(tabWidget->indexOf(tab_2), QCoreApplication::translate("ConfigDialog", "Tab 2", nullptr));
 } // retranslateUi

@@ -35,7 +35,14 @@ struct controlls{
     configurations   *conf;
     QComboBox        *confname;
     QLabel           *label_3;
-
+    QLineEdit        *lineEdit_3;
+    QLineEdit        *lineEdit_4;
+    QLineEdit        *lineEdit_5;
+    QLabel           *label_4;
+    QLabel           *label_5;
+    QLabel           *label_6;
+    QLineEdit        *lineEdit_6;
+    QLabel           *label_7;
 };
 
 
