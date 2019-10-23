@@ -7,7 +7,6 @@ using std::thread;
  * Thread::Thread(std::function<void (Params && ... p)> task, Params && p )
  */
 
-
 Thread::~Thread(){
 
     thread_ptr->detach();
@@ -16,8 +15,17 @@ Thread::~Thread(){
 }
 
 
-ThreadSet::ThreadSet(){
+void Thread::run(){
 
+    _state = enable;
+}
+
+void Thread::stop(){
+
+    _state = disable;
+}
+
+ThreadSet::ThreadSet(){
 
 }
 

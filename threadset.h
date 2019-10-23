@@ -18,8 +18,12 @@ using std::map;
  *
  * *****************************************/
 
-class Thread{
+enum state{enable, disable};
 
+class Thread
+{
+private:
+    state _state;
 protected:
     thread * thread_ptr;
 public:
@@ -29,6 +33,7 @@ public:
     template< class Function, class... Args >
     explicit Thread(Function&& f, Args&&... args ){
 
+         _state = disable;
         //thread_ptr = new thread (task);
         thread_ptr = new std::thread(f, args...);
     }
@@ -41,10 +46,14 @@ public:
 
 };
 
+
+
+
 typedef map<int, Thread *> thread_map;
 
 class ThreadSet
 {
+
 private:
     thread_map threads;
 public:
