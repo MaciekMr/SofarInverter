@@ -133,6 +133,13 @@ void ConfigWindow::setupUi()
     connect(buttonBox, &QDialogButtonBox::accepted, this, &ConfigWindow::accept);
     connect(buttonBox, &QDialogButtonBox::rejected, this, &ConfigWindow::reject);
     connect(buttonNew, &QPushButton::clicked, this, &ConfigWindow::new_config);
+
+    QObject::connect(confname, SIGNAL(currentIndexChanged(const int &)), this, SLOT(indexLoad(const int &)));
+    QObject::connect(confname, SIGNAL(currentTextChanged(const QString &)), this, SLOT(changed(const QString &)));
+    QObject::connect(ip_address, SIGNAL(textChanged(const QString &)), this, SLOT(changed(const QString &)));
+    QObject::connect(port_number, SIGNAL(textEdited(const QString &)), this, SLOT(changed(const QString &)));
+
+
     tabWidget->setCurrentIndex(0);
 
     loadconfig();
@@ -255,5 +262,25 @@ void ConfigWindow::setconfigs(){
         std::cout<<"header:"<<name<<std::endl;
         confname->addItem(QString::fromStdString(name));
     }
+
+}
+
+
+void ConfigWindow::changed(const QString &_t){
+
+    std::cout<<"Text changed!"<<_t.toStdString()<<std::endl;
+}
+
+void ConfigWindow::indexLoad(const int & _index){
+
+    //Get the current index and load the IP and PORT
+    ConfigModel *conf = ConfigModel::getConfig();
+    //Config index is started from 1 where conmbobox started from 0
+    string ip   = conf->findparameter<string>(std::to_string(_index + 1), IP);
+    string port = conf->findparameter<string>(std::to_string(_index + 1), PORT);
+
+    //Set the values to the fields
+    ip_address->setText(QString::fromStdString(ip));
+    port_number->setText(QString::fromStdString(port));
 
 }

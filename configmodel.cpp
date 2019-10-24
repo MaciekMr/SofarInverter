@@ -42,7 +42,7 @@ T ConfigModel::findparameter(string section, string name){
         //not found
     }
 
-    return(NULL);
+    return(T());
 }
 
 template<class T>

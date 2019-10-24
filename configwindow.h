@@ -81,6 +81,8 @@ public slots:
     void accept();
     void reject();
     void new_config();
+    void changed(const QString &);
+    void indexLoad(const int &);
 };
 
 #endif // CONFIGWINDOW_H
